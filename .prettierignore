@@ -1,0 +1,8 @@
+dist/
+buile/
+pnpm-lock.yaml
+/node_modules
+.vscode
+.git
+public/
+icons/
