@@ -12,7 +12,7 @@ export function MovieList({ movies }: MovieListProps) {
           id={movie.id}
           key={movie.id}
           title={movie.title}
-          poster_path={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+          poster_path={movie.poster_path}
           overview={movie.overview}
         />
       ))}

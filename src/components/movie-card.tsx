@@ -2,6 +2,7 @@ import { MouseEvent, useEffect, useState } from 'react'
 import placeholder from '../assets/image-not-available.png'
 import { Heart } from 'lucide-react'
 import { isMovieSaved, toggleSavedMovie } from '../services/db'
+import { useToggleSaveMovieMutation } from '../hooks/use-toggle-save-movie'
 
 type PostCardProps = {
   id: number
@@ -12,6 +13,8 @@ type PostCardProps = {
 
 export function MovieCard({ id, poster_path, title, overview }: PostCardProps) {
   const [saved, setSaved] = useState(false)
+
+  const toggleSaveMovieMutation = useToggleSaveMovieMutation()
 
   useEffect(() => {
     const checkIfSaved = async () => {
@@ -25,8 +28,18 @@ export function MovieCard({ id, poster_path, title, overview }: PostCardProps) {
   const handleSave = async (e: MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    const isSaved = await toggleSavedMovie({ id, poster_path, title, overview })
-    setSaved(isSaved)
+
+    try {
+      const isSaved = await toggleSaveMovieMutation.mutateAsync({
+        id,
+        poster_path,
+        title,
+        overview,
+      })
+      setSaved(isSaved)
+    } catch (error) {
+      console.log('Failed to toggle save movie:', error)
+    }
   }
 
   return (
@@ -42,7 +55,11 @@ export function MovieCard({ id, poster_path, title, overview }: PostCardProps) {
       </button>
       <div className="relative h-48 md:h-64 lg:h-72 overflow-hidden">
         <img
-          src={poster_path || placeholder}
+          src={
+            poster_path
+              ? `https://image.tmdb.org/t/p/w300${poster_path}`
+              : placeholder
+          }
           alt={title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
         />
