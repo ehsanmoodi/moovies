@@ -11,10 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SavedImport } from './routes/saved'
 import { Route as DiscoverImport } from './routes/discover'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const SavedRoute = SavedImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const DiscoverRoute = DiscoverImport.update({
   id: '/discover',
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscoverImport
       parentRoute: typeof rootRoute
     }
+    '/saved': {
+      id: '/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +68,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/discover': typeof DiscoverRoute
+  '/saved': typeof SavedRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/discover': typeof DiscoverRoute
+  '/saved': typeof SavedRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/discover': typeof DiscoverRoute
+  '/saved': typeof SavedRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/discover'
+  fullPaths: '/' | '/discover' | '/saved'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/discover'
-  id: '__root__' | '/' | '/discover'
+  to: '/' | '/discover' | '/saved'
+  id: '__root__' | '/' | '/discover' | '/saved'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DiscoverRoute: typeof DiscoverRoute
+  SavedRoute: typeof SavedRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DiscoverRoute: DiscoverRoute,
+  SavedRoute: SavedRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +116,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/discover"
+        "/discover",
+        "/saved"
       ]
     },
     "/": {
@@ -105,6 +125,9 @@ export const routeTree = rootRoute
     },
     "/discover": {
       "filePath": "discover.tsx"
+    },
+    "/saved": {
+      "filePath": "saved.tsx"
     }
   }
 }

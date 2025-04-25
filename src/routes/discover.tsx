@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/layout'
 import { useState } from 'react'
-import { moviesQueryOptions } from '../services/movies'
+import { moviesQueryOptions } from '../services/api'
 import { Button } from '../components/button'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { MovieCard } from '../components/movie-card'
@@ -28,9 +28,10 @@ function Discover() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {data.results.map((movie: Movie) => (
             <MovieCard
+              id={movie.id}
               key={movie.id}
               title={movie.title}
-              image={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+              poster_path={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
               overview={movie.overview}
             />
           ))}

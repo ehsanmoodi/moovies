@@ -1,17 +1,48 @@
+import { MouseEvent, useEffect, useState } from 'react'
 import placeholder from '../assets/image-not-available.png'
+import { Heart } from 'lucide-react'
+import { isMovieSaved, toggleSavedMovie } from '../services/db'
 
 type PostCardProps = {
-  image: string
+  id: number
+  poster_path: string
   title: string
   overview: string
 }
 
-export function MovieCard({ image, title, overview }: PostCardProps) {
+export function MovieCard({ id, poster_path, title, overview }: PostCardProps) {
+  const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      const isSaved = await isMovieSaved(id)
+      setSaved(isSaved)
+    }
+
+    checkIfSaved()
+  }, [id])
+
+  const handleSave = async (e: MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const isSaved = await toggleSavedMovie({ id, poster_path, title, overview })
+    setSaved(isSaved)
+  }
+
   return (
-    <div className="flex flex-col border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300 bg-white dark:bg-gray-800">
+    <div className="flex flex-col border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300 bg-white dark:bg-gray-800 relative">
+      <button
+        onClick={handleSave}
+        className="absolute top-4 right-4 z-10 p-2 rounded-lg ms-auto border bg-gray-200 dark:bg-gray-800 dark:text-white transition cursor-pointer"
+      >
+        <Heart
+          size={20}
+          className={saved ? 'fill-red-400 stroke-red-400' : ''}
+        />
+      </button>
       <div className="relative h-48 md:h-64 lg:h-72 overflow-hidden">
         <img
-          src={image || placeholder}
+          src={poster_path || placeholder}
           alt={title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
         />

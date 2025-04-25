@@ -22,6 +22,15 @@ export function Header() {
       >
         Discover
       </Link>
+      <Link
+        to="/saved"
+        activeProps={{
+          className: 'underline underline-offset-8',
+        }}
+        activeOptions={{ exact: true }}
+      >
+        Saved
+      </Link>
       <ToggleTheme />
     </nav>
   )
