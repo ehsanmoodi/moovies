@@ -1,14 +1,17 @@
 import { Link } from '@tanstack/react-router'
+import { ToggleTheme } from './toggle-theme'
 
 export function Header() {
   return (
     <nav className="p-4 flex gap-4 text-lg max-w-xl mx-auto items-center">
       <Link
         to="/"
-        className="font-bold text-2xl"
+        activeProps={{
+          className: 'underline underline-offset-8',
+        }}
         activeOptions={{ exact: true }}
       >
-        Moovies
+        Home
       </Link>
       <Link
         to="/discover"
@@ -19,6 +22,7 @@ export function Header() {
       >
         Discover
       </Link>
+      <ToggleTheme />
     </nav>
   )
 }
