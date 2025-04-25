@@ -18,3 +18,4 @@ you can check out a deployed version to vercel from the provided link
 - Tanstack router for routing
 - Tanstack query for data caching and handling async data
 - indexedDB for storing selected movies locally in browser
+- tailwindcss for styling
