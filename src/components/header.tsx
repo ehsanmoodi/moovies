@@ -3,7 +3,7 @@ import { ToggleTheme } from './toggle-theme'
 
 export function Header() {
   return (
-    <nav className="p-4 flex gap-4 text-lg max-w-xl mx-auto items-center">
+    <nav className="p-4 flex gap-4 text-lg container mx-auto items-center">
       <Link
         to="/"
         activeProps={{
