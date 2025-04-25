@@ -10,29 +10,17 @@ const axiosInstance = axios.create({
   },
 })
 
-export const fetchMovies = async ({
-  page,
-  query,
-}: {
-  page: number
-  query?: string
-}) => {
-  const hasQuery = (query || '').length > 0
-
+export const discoverMovies = async ({ page }: { page: number }) => {
   const params = {
     page,
-    ...(hasQuery
-      ? { query }
-      : {
-          'primary_release_date.gte': dayjs()
-            .subtract(1, 'month')
-            .format('YYYY-MM-DD'),
-          'primary_release_date.lte': dayjs().format('YYYY-MM-DD'),
-        }),
+    'primary_release_date.gte': dayjs()
+      .subtract(1, 'month')
+      .format('YYYY-MM-DD'),
+    'primary_release_date.lte': dayjs().format('YYYY-MM-DD'),
   }
 
   const response = await axiosInstance.get<MoviesAPIResponse>(
-    hasQuery ? '/search/movie' : '/discover/movie',
+    '/discover/movie',
     {
       params,
     }
@@ -41,14 +29,39 @@ export const fetchMovies = async ({
   return response.data
 }
 
-export const moviesQueryOptions = ({
+export const discoverMoviesQueryOptions = ({ page }: { page: number }) =>
+  queryOptions({
+    queryKey: ['discover', page],
+    queryFn: () => discoverMovies({ page }),
+  })
+
+export const searchMovies = async ({
   page,
   query,
 }: {
   page: number
-  query?: string
+  query: string
+}) => {
+  const params = {
+    page,
+    query,
+  }
+
+  const response = await axiosInstance.get<MoviesAPIResponse>('/search/movie', {
+    params,
+  })
+
+  return response.data
+}
+
+export const searchMoviesQueryOptions = ({
+  page,
+  query,
+}: {
+  page: number
+  query: string
 }) =>
   queryOptions({
-    queryKey: ['discover', page, query],
-    queryFn: () => fetchMovies({ page, query }),
+    queryKey: ['search', page, query],
+    queryFn: () => searchMovies({ page, query }),
   })
