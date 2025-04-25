@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react'
 import placeholder from '../assets/image-not-available.png'
 import { Heart } from 'lucide-react'
-import { isMovieSaved, toggleSavedMovie } from '../services/db'
+import { isMovieSaved } from '../services/db'
 import { useToggleSaveMovieMutation } from '../hooks/use-toggle-save-movie'
 
 type PostCardProps = {

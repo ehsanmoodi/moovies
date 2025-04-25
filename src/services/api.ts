@@ -1,11 +1,7 @@
-import {
-  queryOptions,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { queryOptions } from '@tanstack/react-query'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import { getSavedMovies, toggleSavedMovie } from './db'
+import { getSavedMovies } from './db'
 
 const axiosInstance = axios.create({
   baseURL: 'https://api.themoviedb.org/3',
